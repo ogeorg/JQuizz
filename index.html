@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<meta content="width=device-width, initial-scale=1, minimum-scale=1,maximum-scale=1" name="viewport" />
+<head>
+<title>Quizz Euskera</title>
+<link rel="stylesheet" href="jquerymobile.css" />
+<link rel="stylesheet" href="main.css" />
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquerymobile.js"></script>
+<script type="text/javascript" src="data.js"></script>
+<script type="text/javascript" src="prioritylist.js"></script>
+<script type="text/javascript" src="quizz.js"></script>
+<script type="text/javascript">
+var id_quizz = null;
+var current_quizz;
+$(document).ready(function () {
+	var elQuizzes = $('#quizzes'); // elemento
+	var quizzes = data['quizzes']; // dict de quizzes (key-titulo)
+	for(q in quizzes) {
+		var quizz = quizzes[q];
+		var count = data[q].length;
+		elQuizzes.append("<li><a href='#page-quizz' quizz-target='"+q+"'>" + quizz + "</a><span class='ui-li-count'>" + count + "</span></li>");
+	}
+
+	elQuizzes.listview('refresh');
+	$('#quizzes a').click(function () {
+		var el = $(this);
+		var target = el.attr('quizz-target');
+		id_quizz = target;
+	});
+	
+	function enableSubmit()
+	{
+		$("#quizz-next-question").addClass('ui-disabled');
+		$("#quizz-submit").removeClass('ui-disabled');
+
+		$("body").unbind('keypress');
+		$("#question-form").unbind('submit');
+		$("#question-form").submit(onSubmit);
+	}
+	
+	function enableNextQuestion()
+	{
+		$("#quizz-next-question").removeClass('ui-disabled');
+		$("#quizz-submit").addClass('ui-disabled');
+
+		$("#question-form").unbind('submit');
+		$("#question-form").submit(onNextQuestion);
+		$("body").keypress(onNextQuestion);
+	}
+	
+	$("#page-quizz").live("pageshow", function() {
+		current_quizz = new Quizz(quizzes[id_quizz], data[id_quizz]);
+		current_quizz.install();
+		enableSubmit();
+	});
+	
+	function onSubmit() {
+		current_quizz.check_answer();
+		enableNextQuestion();
+		return false;
+	}
+	
+	$("#quizz-submit").click(onSubmit);
+	
+	function onNextQuestion() {
+		current_quizz.next_question();
+		enableSubmit();
+		return false;
+	}
+
+	$("#quizz-next-question").click(onNextQuestion);
+});
+</script>
+</head>
+<body>
+
+<div id='page-quizzes' data-role="page" data-add-back-btn="false">
+	<div data-role="header"><h1>Quizz de euskera</h1></div>
+	<div data-role="content">
+	<ul id='quizzes' data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+			<li data-role="list-divider">Quizzes</li>
+	</ul><!-- A propos de moi-->
+	</div><!-- contenu de la page -->
+	<div data-role="footer"><h4>Pied de page</h4></div>
+</div><!-- /Fin de la page -->
+
+<div id='page-quizz' data-role="page" data-add-back-btn="true">
+	<div data-role="header"><h1><span id='title-quizz'></span></h1></div>
+	<div data-role="content" id='quizz-content-question'>
+		<form id='question-form' action="#" method="get">
+			<p>
+				<label for="quizz-question">Pregunta:</label>
+				<span id="quizz-question"></span>
+			</p>
+			<p>
+				<label for="quizz-answer">Respuesta:</label>
+				<span id="quizz-answer"></span>
+			</p>
+
+			<div class="ui-grid-a">
+				<div class="ui-block-a">
+					<button id="quizz-submit" type="button" data-theme="b">Comprobar</button>
+				</div>
+				<div class="ui-block-b">
+					<button id="quizz-next-question" type="button" data-theme="b">Siguiente</button>
+				</div>
+			</div>
+			
+			<!-- recuento de respuestas -->
+			<table id='counts'>
+				<tr><td>Incorrectas</td><td>Preguntas</td><td>Correctas</td></tr>
+				<tr><td><span id='answers-ko'></span></td><td><span id='answers-total'></span></td><td><span id='answers-ok'></span></td></tr>
+			</table>
+
+			<!-- estadisticas del estado -->
+			<table id='stats'><tr><td id='stats-title'>
+				Nivel
+			</td><td>
+				<table></table>
+			</td></tr></table>
+		</form>
+	</div><!-- fin content -->
+	<div data-role="footer"><h4>Pied de page</h4></div>	
+</div>
+</body>
+</html>

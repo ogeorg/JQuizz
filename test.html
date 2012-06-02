@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+      "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link rel="stylesheet" href="qunit.css" type="text/css"/>
+<script src="http://code.jquery.com/jquery-latest.js"> </script>
+<script type="text/javascript" src="qunit.js"></script>
+<script type="text/javascript" src="data.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    module("Basic Unit Test");
+	
+    list = ['a', 'b', 'c'];
+    plist = new PriorityList(list);
+    test("Sample test", function()
+    {
+        // expect(5);
+
+        var plist_size = plist.size();
+        QUnit.equal(plist_size, list.length,
+            'Expected '+list.length+' as the result, result was: ' + plist_size);
+        
+		var expected_lists = [[], [], ['a','b','c'], [], []];
+		QUnit.deepEqual(plist.lists, expected_lists, 
+			'No change: Expected lists '+expected_lists+' as the result, result was: ' + plist.lists);
+			
+        var plist_sizes = plist.sizes();
+        var expected_sizes = [0,0,3,0,0];
+        QUnit.deepEqual(plist_sizes, expected_sizes,
+            'No change: Expected sizes '+expected_sizes+' as the result, result was: ' + plist_sizes);
+
+		var item = plist.removeItem(2, 0);
+		var expected_lists = [[], [], ['b','c'], [], []];
+		var expected_item = 'a';
+		QUnit.deepEqual(plist.lists, expected_lists, 
+			'removeItem(2, 0): Expected lists '+expected_lists+' as the result, result was: ' + plist.lists);
+		QUnit.deepEqual(item, expected_item, 
+			'removeItem(2, 0): Expected item '+expected_item+' as the result, result was: ' + item);
+
+
+		plist.pushItem(2, 'a');
+		var expected_lists = [[], [], ['b','c','a'], [], []];
+		QUnit.deepEqual(plist.lists, expected_lists, 
+			'pushItem(2, \'a\'): Expected lists '+expected_lists+' as the result, result was: ' + plist.lists);
+
+		plist.raiseItem(2, 1);
+		var expected_lists = [[], [], ['b','a'], ['c'], []];
+		QUnit.deepEqual(plist.lists, expected_lists, 
+			'raiseItem(2, 1): Expected lists '+expected_lists+' as the result, result was: ' + plist.lists);
+
+		plist.raiseItem(3, 0);
+		var expected_lists = [[], [], ['b','a'], [], ['c']];
+		QUnit.deepEqual(plist.lists, expected_lists, 
+			'raiseItem(3, 0): Expected lists '+expected_lists+' as the result, result was: ' + plist.lists);
+
+		plist.lowerItem(2, 1);
+		var expected_lists = [[], ['a'], ['b'], [], ['c']];
+		QUnit.deepEqual(plist.lists, expected_lists, 
+			'lowerItem(2, 1): Expected lists '+expected_lists+' as the result, result was: ' + plist.lists);
+
+		plist.lowerItem(1, 0);
+		var expected_lists = [['a'], [], ['b'], [], ['c']];
+		QUnit.deepEqual(plist.lists, expected_lists, 
+			'lowerItem(1, 0): Expected lists '+expected_lists+' as the result, result was: ' + plist.lists);
+
+		plist.lowerItem(0, 0);
+		var expected_lists = [['a'], [], ['b'], [], ['c']];
+		QUnit.deepEqual(plist.lists, expected_lists, 
+			'lowerItem(0, 0): Expected lists '+expected_lists+' as the result, result was: ' + plist.lists);
+
+		QUnit.deepEqual( [1], [1], 'fails');
+    });
+
+    module("Raise and Lower", {
+		setup: function() {
+			this.plist = new PriorityList(['a', 'b', 'c']);
+		}
+	});
+    
+    test("No change", function()
+    {
+		var expected_lists = [[], [], ['a','b','c'], [], []];
+		QUnit.deepEqual(this.plist.lists, expected_lists, 
+			'No change: Expected lists '+expected_lists+' as the result, result was: ' + this.plist.lists);
+	});
+	
+    test("Raise", function()
+    {
+		var item = this.plist.raiseItem(2, 0);
+		var expected_lists = [[], [], ['b','c'], ['a'], []];
+		var expected_item = 'a';
+		QUnit.deepEqual(this.plist.lists, expected_lists, 
+			'raiseItem(2, 0): Expected lists '+expected_lists+' as the result, result was: ' + this.plist.lists);
+		QUnit.deepEqual(item, expected_item, 
+			'raiseItem(2, 0): Expected item '+expected_item+' as the result, result was: ' + item);
+	});
+
+    test("Lower", function()
+    {
+		var item = this.plist.lowerItem(2, 0);
+		var expected_lists = [[], ['a'], ['b','c'], [], []];
+		var expected_item = 'a';
+		QUnit.deepEqual(this.plist.lists, expected_lists, 
+			'lowerItem(2, 0): Expected lists '+expected_lists+' as the result, result was: ' + this.plist.lists);
+		QUnit.deepEqual(item, expected_item, 
+			'lowerItem(2, 0): Expected item '+expected_item+' as the result, result was: ' + item);
+	});
+});
+</script>
+</head>
+<body>
+<h1 id="qunit-header">QUnit example</h1>
+<h2 id="qunit-banner"></h2>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests">
+</ol>
+</body>
+</html>

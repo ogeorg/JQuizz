@@ -1,0 +1,93 @@
+body, html {
+    width: 320px;
+}
+
+#page-quizzes, #page-quizz {
+    width: 320px;
+	font-size: 70%;
+}
+
+#title-quizz {
+	font-size: 70%;
+	}
+#question-form p {
+	-webkit-margin-before: auto;
+	-webkit-margin-after: auto;
+	height: 26px;
+	}
+
+#quizz-question {
+    text-align: center;
+	}
+	
+#quizz-answer {
+    text-align: center;
+	}
+
+#quizz-answer input {
+    text-align: left;
+	}
+
+#quizz-answer input.incorrect-answer {
+    border-color: red;
+	}
+
+#quizz-answer input.correct-answer {
+    border-color: #88ff88;
+	}
+
+#quizz-answer span.incorrect-answer {
+    color: #800;
+	text-decoration:line-through;
+}
+
+#quizz-answer span.correct-answer {
+    color: #080;
+}
+
+#answers-total {
+	}
+#answers-ok {
+	color: #080;
+	}
+#answers-ko {
+	color: #800;
+	}
+
+#counts {
+	width: 100%;
+	border-top: 1px solid black;
+	}
+#counts td:nth-child(1) {
+	text-align: left;
+	}
+#counts td:nth-child(2) {
+	text-align: center;
+	}
+#counts td:nth-child(3) {
+	text-align: right;
+	}
+
+#stats {
+	width: 100%;
+	border-top: 1px solid black;
+	}
+#stats table {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	}
+#stats table td {
+	text-align: center;
+	padding: 0px;
+	}
+#stats-title {
+	text-align: left;
+	vertical-align: top;
+	width: 50px;
+	}
+#stats table tr:nth-child(2) td {
+	height: 50px; 
+	vertical-align: bottom;
+	}
+

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<link rel="stylesheet" href="jquerymobile.css" />
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquerymobile.js"></script>
+<script type="text/javascript" src="data.js"></script>
+<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    var elQuizzes = $('#quizzes');
+    var quizzes = data['quizzes'];
+    for(q in quizzes) {
+//    for(var q=0; q<quizzes.length; q++) {
+	var quizz = quizzes[q];
+	elQuizzes.append("<li><a href='#'>" + quizz + "</a></li>");
+    }
+    elQuizzes.listview('refresh');
+});
+</script>
+</head>
+<body>
+
+<div data-role="page" data-add-back-btn="false">
+    <div data-role="header"><h1>Quizz de euskera</h1></div>
+    <div data-role="content">
+	<ul id='quizzes' data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+    	    <li data-role="list-divider">Quizzes</li>
+	    <li><a href="pages/cv.php">Mon CV</a></li>
+	    <li><a href="#">Mes projets</a></li>
+	</ul><!-- A propos de moi-->
+    </div><!-- contenu de la page -->
+    <div data-role="footer"><h4>Pied de page</h4></div>
+</div><!-- /Fin de la page -->
+
+<div data-role="page" data-add-back-btn="true">
+    <div data-role="header"><h1><span id='title_quizz'></span></h1></div>
+    <div data-role="content">
+    </div>
+    <div data-role="footer"><h4>Pied de page</h4></div>    
+</div>
+</body>
+</html>
